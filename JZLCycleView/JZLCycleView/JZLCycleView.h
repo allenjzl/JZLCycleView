@@ -22,6 +22,9 @@
 typedef void(^clickItemBlock)(NSInteger currentIndex);
 @interface JZLCycleView : UIView<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 @property (nonatomic, weak) id<JZLCycleViewDelegate> delegate;
+//定时器
+@property (nonatomic, weak) NSTimer *timer;
+@property (nonatomic, assign) NSInteger index;
 //页码小圆点
 @property (nonatomic, strong) UIPageControl *pageControl;
 //图片数组

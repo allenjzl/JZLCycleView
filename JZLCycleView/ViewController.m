@@ -17,8 +17,8 @@
 @end
 
 @interface ViewController ()<JZLCycleViewDelegate>
-@property (nonatomic, strong) JZLCycleView *cycleView;
-@property (nonatomic, strong) JZLCycleView *cycleView2;
+@property (nonatomic, weak) JZLCycleView *cycleView;
+@property (nonatomic, weak) JZLCycleView *cycleView2;
 @end
 
 @implementation ViewController
@@ -60,6 +60,8 @@
 - (void)selectItemAtIndex:(NSInteger)index {
     NSLog(@"%ld",index);
 }
+
+
 
 
 

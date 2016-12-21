@@ -18,9 +18,7 @@
 @interface JZLCycleView ()
 
 
-//定时器
-@property (nonatomic, strong) NSTimer *timer;
-@property (nonatomic, assign) NSInteger index;
+
 
 @end
 @implementation JZLCycleView
@@ -165,6 +163,7 @@
         }
         
         self.pageControl.currentPage = self.index % self.imageArray.count ;
+        NSLog(@"hahahaha");
     }
 
 }
@@ -229,6 +228,14 @@
     [self.imageArray removeAllObjects];
     self.imageArray = imageArrayTemp;
 }
+
+//view要销毁时,释放timer
+- (void)removeFromSuperview {
+    [super removeFromSuperview];
+    [self.timer invalidate];
+    self.timer = nil;
+}
+
 
 
 
