@@ -33,23 +33,12 @@
 }
 
 
-+ (instancetype)cycleCollectionViewWithFrame: (CGRect)frame PlaceholderImage: (UIImage *)placeholderImage {
-    JZLCycleView *cycleView = [[self alloc] initWithFrame:frame];
-    cycleView.placeholderImage = placeholderImage;
-        [cycleView.imageArray addObject:placeholderImage];
-    return cycleView;
-   
-}
+
 
 + (instancetype)cycleCollectionViewWithFrame: (CGRect)frame imageArray: (NSArray *)imageArray PlaceholderImage: (UIImage *)placeholderImage {
     JZLCycleView *cycleView = [[self alloc] initWithFrame:frame];
     cycleView.placeholderImage = placeholderImage;
-    if (imageArray.count == 0) {
-        [cycleView.imageArray addObject:placeholderImage];
-    }else {
-        cycleView.imageArray = [NSMutableArray arrayWithArray:imageArray];
-    }
-    
+    cycleView.imageArray = [NSMutableArray arrayWithArray:imageArray];
     return cycleView;
     
 }
@@ -104,7 +93,10 @@
             if ([self.imageArray[indexPath.row % self.imageArray.count] isKindOfClass:[UIImage class]]) {
                 cell.imageView.image = self.imageArray[indexPath.row % self.imageArray.count];
             }else if([self.imageArray[indexPath.row % self.imageArray.count] isKindOfClass:[NSString class]]) {
-                [cell.imageView sd_setImageWithURL:[NSURL URLWithString:self.imageArray[indexPath.row % self.imageArray.count]] placeholderImage:self.placeholderImage];
+                if ([self.imageArray[indexPath.row % self.imageArray.count] hasPrefix:@"http"]) {
+                    [cell.imageView sd_setImageWithURL:[NSURL URLWithString:self.imageArray[indexPath.row % self.imageArray.count]] placeholderImage:self.placeholderImage];
+                }
+
             }
         
     }
@@ -117,7 +109,7 @@
     }else {
         //block
         if (self.clickItemBlock) {
-            self.clickItemBlock(indexPath.item%self.imageArray.count);
+            self.clickItemBlock(indexPath.item % self.imageArray.count);
         }
         
         //代理
@@ -163,7 +155,7 @@
         }
         
         self.pageControl.currentPage = self.index % self.imageArray.count ;
-        NSLog(@"hahahaha");
+//        NSLog(@"hahahaha");
     }
 
 }
@@ -173,10 +165,11 @@
     if (self.imageArray.count == 0) {
         return;
     }else {
+        //到第一组的最后一个,无动画滚动到中间一组的最后一个
         if (self.index == self.imageArray.count - 1) {
             [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.imageArray.count * 2 - 1 inSection:0] atScrollPosition:0 animated:NO];
         }
-        
+        //到最后一组的第一个,无动画滚动到中间一组的第一个
         if (self.index == self.imageArray.count * 2) {
             [self.collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForItem:self.imageArray.count inSection:0] atScrollPosition:0 animated:NO];
         }
@@ -205,6 +198,7 @@
     self.pageControl.numberOfPages = imageArray.count;
     self.pageControl.currentPage = 0;
         NSIndexPath *indexPath = [NSIndexPath indexPathForItem:self.imageArray.count inSection:0];
+    //初始化滚动到第二组的第一个
         [self.collectionView scrollToItemAtIndexPath:indexPath atScrollPosition:0 animated:NO];
     
     if (self.timer) {
@@ -218,16 +212,7 @@
     
 }
 
-- (void)setImageUrlArray:(NSMutableArray *)imageUrlArray {
-    [_imageUrlArray removeAllObjects];
-    _imageUrlArray = imageUrlArray;
-    NSMutableArray *imageArrayTemp = [NSMutableArray array];
-    for (NSString *urlString in imageUrlArray) {
-        [imageArrayTemp addObject:urlString];
-    }
-    [self.imageArray removeAllObjects];
-    self.imageArray = imageArrayTemp;
-}
+
 
 //view要销毁时,释放timer
 - (void)removeFromSuperview {

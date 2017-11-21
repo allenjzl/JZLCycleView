@@ -27,32 +27,30 @@
     [super viewDidLoad];
 
 
-    _cycleView = [JZLCycleView cycleCollectionViewWithFrame:CGRectMake(0, 0, JZLScreenWidth, JZLCycleViewHeight) PlaceholderImage:[UIImage imageNamed:@"placeholderImage"]];
-    _cycleView.pageControl.pageIndicatorTintColor = [UIColor orangeColor];
-    _cycleView.pageControl.currentPageIndicatorTintColor = [UIColor whiteColor];
-    _cycleView.delegate = self;
-    _cycleView.clickItemBlock = ^(NSInteger index){
-        NSLog(@"%ld",(long)index);
-    };
-    [self.view addSubview:_cycleView];
-    //延迟模拟网络加载
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            NSMutableArray *arrTemp = [NSMutableArray array];
-        [arrTemp addObject:@"http://pic2.cxtuku.com/00/01/30/b5898506ee44.jpg"];
-        [arrTemp addObject:@"http://img4.duitang.com/uploads/blog/201306/08/20130608100514_HfKmk.thumb.600_0.jpeg"];
-        [arrTemp addObject:@"http://my.isself.com/upimg/user/30/20131117/13846939809150.jpg"];
-        [arrTemp addObject:@"http://img2.duitang.com/uploads/item/201208/07/20120807210311_ztEEM.thumb.600_0.jpeg"];
-        
-            _cycleView.imageUrlArray = arrTemp;
-    });
-//
+    
+    
+    
+    //网络图片
     NSMutableArray *arrTemp = [NSMutableArray array];
+    [arrTemp addObject:@"http://pic2.cxtuku.com/00/01/30/b5898506ee44.jpg"];
+    [arrTemp addObject:@"http://img4.duitang.com/uploads/blog/201306/08/20130608100514_HfKmk.thumb.600_0.jpeg"];
+    [arrTemp addObject:@"http://my.isself.com/upimg/user/30/20131117/13846939809150.jpg"];
+    [arrTemp addObject:@"http://img2.duitang.com/uploads/item/201208/07/20120807210311_ztEEM.thumb.600_0.jpeg"];
+    _cycleView = [JZLCycleView cycleCollectionViewWithFrame:CGRectMake(0, 0, JZLScreenWidth, JZLCycleViewHeight) imageArray:arrTemp PlaceholderImage:[UIImage imageNamed:@"placeholderImage"]];
+    [self.view addSubview:_cycleView];
+    _cycleView.delegate = self;
+    
+    
+    //本地图片
+    NSMutableArray *arrTemp2 = [NSMutableArray array];
     for (NSInteger i = 1; i < 5; i++) {
         UIImage *image = [UIImage imageNamed:[NSString stringWithFormat:@"%@%ld",@"car",(long)i]];
-        [arrTemp addObject:image];
+        [arrTemp2 addObject:image];
     }
-    _cycleView2 = [JZLCycleView cycleCollectionViewWithFrame:CGRectMake(0, 300, JZLScreenWidth, JZLCycleViewHeight) imageArray:arrTemp PlaceholderImage:[UIImage imageNamed:@"placeholderImage"]];
+    
+    _cycleView2 = [JZLCycleView cycleCollectionViewWithFrame:CGRectMake(0, 300, JZLScreenWidth, JZLCycleViewHeight) imageArray:arrTemp2 PlaceholderImage:[UIImage imageNamed:@"placeholderImage"]];
     [self.view addSubview:_cycleView2];
+    _cycleView2.delegate = self;
     
 }
 

@@ -29,30 +29,20 @@ typedef void(^clickItemBlock)(NSInteger currentIndex);
 @property (nonatomic, strong) UIPageControl *pageControl;
 //图片数组
 @property (nonatomic, strong) NSMutableArray *imageArray;
-//图片url数组
-@property (nonatomic, strong) NSMutableArray *imageUrlArray;
 //占位图片
 @property (nonatomic, strong) UIImage *placeholderImage;
 //collectionView
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, copy) clickItemBlock clickItemBlock;
 
-/**
- 加载后台获取的url图片
-
- @param frame 图片轮播器的frame
- @param placeholderImage 占位图
- @return 图片轮播图
- */
-+ (instancetype)cycleCollectionViewWithFrame: (CGRect)frame PlaceholderImage: (UIImage *)placeholderImage;
 
 
 
 /**
- 加载本地图片
+ 初始化轮播器
 
  @param frame 图片轮播器frame
- @param imageArray 本地图片数组(数组里元素为imageView)
+ @param imageArray 本地图片数组(可传图片url和本地图片,自动判断)
  @param placeholderImage 占位图
  @return 图片轮播器
  */
